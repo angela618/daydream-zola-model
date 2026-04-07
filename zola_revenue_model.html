@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daydream x Zola — Affiliate Revenue Model</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue:    #2E16CB;
+    --blue-mid:#7182DB;
+    --purple:  #BC74FF;
+    --white:   #ffffff;
+    --bg:      #f8f8f8;
+    --border:  #e2e2e2;
+    --text:    #111111;
+    --muted:   #666666;
+    --faint:   #999999;
+    --red:     #c0392b;
+  }
+  html { font-size: 15px; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-weight: 400; line-height: 1.6; min-height: 100vh; }
+
+  header { background: var(--blue); padding: 1.75rem 2.5rem; display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .header-lockup { display: flex; align-items: baseline; gap: 0.7rem; }
+  .logo { font-family: 'DM Serif Display', serif; font-size: 1.45rem; color: var(--white); }
+  .logo em { font-style: italic; }
+  .logo-sep { color: rgba(255,255,255,0.35); font-size: 1rem; }
+  .logo-zola { font-family: 'DM Serif Display', serif; font-size: 1.45rem; color: var(--purple); letter-spacing: 0.04em; }
+  .header-sub { font-size: 0.7rem; color: rgba(255,255,255,0.4); letter-spacing: 0.12em; text-transform: uppercase; }
+
+  main { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+  .intro { margin-bottom: 2rem; }
+  .intro h1 { font-family: 'DM Serif Display', serif; font-size: 1.85rem; color: var(--text); font-weight: 400; line-height: 1.2; margin-bottom: 0.4rem; }
+  .intro p { font-size: 0.875rem; color: var(--muted); }
+
+  .section { margin-bottom: 2rem; }
+  .section-label { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue-mid); margin-bottom: 0.9rem; }
+
+  .controls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0.75rem; }
+  .ctrl-card { background: var(--white); border: 0.5px solid var(--border); border-radius: 10px; padding: 1rem 1.1rem; }
+  .ctrl-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.6rem; }
+  .ctrl-name { font-size: 0.8rem; color: var(--muted); }
+  .ctrl-value { font-family: 'DM Serif Display', serif; font-size: 1.2rem; color: var(--text); }
+
+  input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 3px; border-radius: 2px; background: var(--border); outline: none; cursor: pointer; }
+  input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--blue); cursor: pointer; transition: background 0.15s; }
+  input[type="range"]:hover::-webkit-slider-thumb { background: var(--blue-mid); }
+
+  /* per-sale strip */
+  .per-sale { display: grid; grid-template-columns: repeat(4, 1fr); background: var(--white); border: 0.5px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .ps-item { padding: 1rem 1.1rem; border-right: 0.5px solid var(--border); }
+  .ps-item:last-child { border-right: none; background: #f4f4ff; }
+  .ps-label { font-size: 0.68rem; color: var(--faint); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .ps-amount { display: flex; align-items: baseline; font-family: 'DM Serif Display', serif; font-size: 1.3rem; font-variant-numeric: tabular-nums; }
+  .ps-sign { color: var(--muted); min-width: 18px; }
+  .ps-sign.neg { color: var(--red); }
+  .ps-num { flex: 1; text-align: right; color: var(--text); }
+  .ps-num.red { color: var(--red); }
+  .ps-num.blue { color: var(--blue); }
+  .ps-num.redval { color: var(--red); }
+
+  /* metric cards */
+  .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.75rem; }
+  .metric-card { background: var(--white); border: 0.5px solid var(--border); border-radius: 10px; padding: 1rem 1.1rem; }
+  .metric-card.featured { background: var(--blue); border-color: var(--blue); }
+  .metric-label { font-size: 0.72rem; color: var(--muted); margin-bottom: 0.25rem; }
+  .metric-card.featured .metric-label { color: rgba(255,255,255,0.5); }
+  .metric-val { font-family: 'DM Serif Display', serif; font-size: 1.7rem; color: var(--text); line-height: 1.1; }
+  .metric-card.featured .metric-val { color: var(--purple); }
+  .metric-val.danger { color: var(--red); }
+  .metric-sub { font-size: 0.7rem; color: var(--faint); margin-top: 0.2rem; }
+  .metric-card.featured .metric-sub { color: rgba(255,255,255,0.4); }
+
+  .divider { border: none; border-top: 0.5px solid var(--border); margin: 0.5rem 0 2rem; }
+
+  /* sensitivity table */
+  .table-wrap { background: var(--white); border: 0.5px solid var(--border); border-radius: 10px; overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  thead tr { background: var(--blue); }
+  thead th { padding: 0.75rem 0.9rem; text-align: right; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.08em; color: rgba(255,255,255,0.45); text-transform: uppercase; }
+  thead th:first-child { text-align: left; }
+  thead th.cur-col { color: var(--purple); }
+  tbody tr { border-bottom: 0.5px solid var(--border); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr.cur-vol { background: #f0f0ff; }
+  tbody td { padding: 0.7rem 0.9rem; text-align: right; color: var(--text); font-variant-numeric: tabular-nums; }
+  tbody td:first-child { text-align: left; font-size: 0.75rem; color: var(--muted); font-weight: 500; }
+  .c-pos { color: var(--blue) !important; font-weight: 500; }
+  .c-mid { color: var(--blue-mid) !important; }
+  .c-neg { color: var(--red) !important; }
+  .c-cur { font-weight: 500; }
+  .sens-note { font-size: 0.72rem; color: var(--faint); padding: 0.6rem 0.9rem; background: var(--bg); border-top: 0.5px solid var(--border); }
+
+  footer { text-align: center; padding: 1.5rem; font-size: 0.7rem; color: var(--faint); border-top: 0.5px solid var(--border); }
+
+  @media (max-width: 560px) {
+    header { padding: 1.25rem 1rem; }
+    main { padding: 1.25rem 1rem 3rem; }
+    .per-sale { grid-template-columns: repeat(2,1fr); }
+    .ps-item { border-bottom: 0.5px solid var(--border); }
+    .ps-item:nth-child(2n) { border-right: none; }
+    .ps-item:nth-child(3), .ps-item:nth-child(4) { border-bottom: none; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-lockup">
+    <span class="logo"><em>Daydream</em></span>
+    <span class="logo-sep">x</span>
+    <span class="logo-zola">ZOLA</span>
+  </div>
+  <span class="header-sub">Affiliate Revenue Model · Confidential</span>
+</header>
+
+<main>
+  <div class="intro">
+    <h1>Partnership revenue model</h1>
+    <p>Adjust inputs to model net revenue across different commission, volume, and AOV scenarios.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Inputs</div>
+    <div class="controls-grid">
+      <div class="ctrl-card">
+        <div class="ctrl-top"><span class="ctrl-name">Average order value (AOV)</span><span class="ctrl-value" id="aov-out">$180</span></div>
+        <input type="range" id="aov" min="80" max="400" step="10" value="180">
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-top"><span class="ctrl-name">Daydream take rate</span><span class="ctrl-value" id="take-out">14%</span></div>
+        <input type="range" id="take" min="10" max="20" step="1" value="14">
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-top"><span class="ctrl-name">Affiliate commission to Zola</span><span class="ctrl-value" id="commission-out">10%</span></div>
+        <input type="range" id="commission" min="5" max="16" step="1" value="10">
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-top"><span class="ctrl-name">Monthly Zola-driven sales</span><span class="ctrl-value" id="volume-out">500</span></div>
+        <input type="range" id="volume" min="50" max="5000" step="50" value="500">
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-top"><span class="ctrl-name">Impact per-transaction fee</span><span class="ctrl-value" id="txfee-out">$0.50</span></div>
+        <input type="range" id="txfee" min="0" max="2" step="0.1" value="0.5">
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-top"><span class="ctrl-name">Impact monthly platform fee</span><span class="ctrl-value" id="platform-out">$500</span></div>
+        <input type="range" id="platform" min="0" max="2000" step="100" value="500">
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Per-sale economics</div>
+    <div class="per-sale">
+      <div class="ps-item">
+        <div class="ps-label">Gross per sale</div>
+        <div class="ps-amount"><span class="ps-sign">$</span><span class="ps-num" id="ps-gross">—</span></div>
+      </div>
+      <div class="ps-item">
+        <div class="ps-label">Affiliate commission</div>
+        <div class="ps-amount"><span class="ps-sign neg">−$</span><span class="ps-num red" id="ps-comm">—</span></div>
+      </div>
+      <div class="ps-item">
+        <div class="ps-label">Impact tx fee</div>
+        <div class="ps-amount"><span class="ps-sign neg">−$</span><span class="ps-num red" id="ps-tx">—</span></div>
+      </div>
+      <div class="ps-item">
+        <div class="ps-label">Net per sale</div>
+        <div class="ps-amount"><span class="ps-sign" id="ps-net-sign">$</span><span class="ps-num blue" id="ps-net">—</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Monthly summary</div>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">Gross revenue</div>
+        <div class="metric-val" id="m-gross">—</div>
+        <div class="metric-sub" id="m-gross-sub">—</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Affiliate payout to Zola</div>
+        <div class="metric-val" id="m-comm">—</div>
+        <div class="metric-sub" id="m-comm-sub">—</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Impact total cost</div>
+        <div class="metric-val" id="m-impact">—</div>
+        <div class="metric-sub">tx fees + platform</div>
+      </div>
+      <div class="metric-card featured" id="profit-card">
+        <div class="metric-label">Net monthly profit</div>
+        <div class="metric-val" id="m-profit">—</div>
+        <div class="metric-sub" id="m-margin">—</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="section-label">Sensitivity analysis — net monthly profit</div>
+    <div class="table-wrap">
+      <div id="sens-table"></div>
+      <div class="sens-note">AOV and take rate held at current slider values. Highlighted row = current volume. Bold column = current commission rate.</div>
+    </div>
+  </div>
+</main>
+
+<footer>Daydream x Zola Partnership · Internal use only · Not for distribution</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+const fmt = n => '$' + Math.round(n).toLocaleString();
+
+function calc() {
+  const aov      = +$('aov').value;
+  const take     = +$('take').value / 100;
+  const comm     = +$('commission').value / 100;
+  const vol      = +$('volume').value;
+  const txFee    = +$('txfee').value;
+  const platform = +$('platform').value;
+
+  $('aov-out').textContent        = '$' + aov;
+  $('take-out').textContent       = +$('take').value + '%';
+  $('commission-out').textContent = +$('commission').value + '%';
+  $('volume-out').textContent     = vol.toLocaleString();
+  $('txfee-out').textContent      = '$' + parseFloat($('txfee').value).toFixed(2);
+  $('platform-out').textContent   = '$' + Math.round(platform).toLocaleString();
+
+  const gross      = aov * take;
+  const commAmt    = aov * comm;
+  const netPerSale = gross - commAmt - txFee;
+
+  $('ps-gross').textContent = gross.toFixed(2);
+  $('ps-comm').textContent  = commAmt.toFixed(2);
+  $('ps-tx').textContent    = txFee.toFixed(2);
+
+  const psNet     = $('ps-net');
+  const psNetSign = $('ps-net-sign');
+  psNet.textContent     = Math.abs(netPerSale).toFixed(2);
+  psNetSign.textContent = netPerSale < 0 ? '−$' : '$';
+  psNetSign.className   = 'ps-sign' + (netPerSale < 0 ? ' neg' : '');
+  psNet.className       = 'ps-num ' + (netPerSale < 0 ? 'redval' : 'blue');
+
+  const mGross  = gross * vol;
+  const mComm   = commAmt * vol;
+  const mTx     = txFee * vol;
+  const mImpact = mTx + platform;
+  const mProfit = mGross - mComm - mImpact;
+  const margin  = mGross > 0 ? mProfit / mGross * 100 : 0;
+
+  $('m-gross').textContent     = fmt(mGross);
+  $('m-gross-sub').textContent = vol.toLocaleString() + ' sales x $' + gross.toFixed(2);
+  $('m-comm').textContent      = fmt(mComm);
+  $('m-comm-sub').textContent  = +$('commission').value + '% of $' + Math.round(aov * vol).toLocaleString() + ' GMV';
+  $('m-impact').textContent    = fmt(mImpact);
+  $('m-profit').textContent    = fmt(mProfit);
+  $('m-profit').className      = 'metric-val' + (mProfit < 0 ? ' danger' : '');
+  $('m-margin').textContent    = Math.round(margin) + '% net margin';
+
+  const pc = $('profit-card');
+  if (mProfit < 0) {
+    pc.style.background  = '#fff0f0';
+    pc.style.borderColor = '#f5c6c6';
+  } else {
+    pc.style.background  = '';
+    pc.style.borderColor = '';
+  }
+
+  buildSens(aov, take, +$('commission').value, vol, txFee, platform);
+}
+
+function buildSens(aov, take, currentComm, currentVol, txFee, platform) {
+  const commRates = [8, 10, 11, 12, 14];
+  const volumes   = [200, 500, 1000, 2000, 5000];
+
+  let html = '<table><thead><tr><th>Commission / Volume</th>';
+  commRates.forEach(c => {
+    html += `<th class="${c === currentComm ? 'cur-col' : ''}">${c}%</th>`;
+  });
+  html += '</tr></thead><tbody>';
+
+  volumes.forEach(v => {
+    html += `<tr${v === currentVol ? ' class="cur-vol"' : ''}>`;
+    html += `<td>${v.toLocaleString()}/mo</td>`;
+    commRates.forEach(c => {
+      const p   = aov * take * v - aov * (c/100) * v - (txFee * v + platform);
+      const cls = p > 2000 ? 'c-pos' : p > 0 ? 'c-mid' : 'c-neg';
+      html += `<td class="${cls}${c === currentComm ? ' c-cur' : ''}">${fmt(p)}</td>`;
+    });
+    html += '</tr>';
+  });
+
+  html += '</tbody></table>';
+  $('sens-table').innerHTML = html;
+}
+
+['aov','take','commission','volume','txfee','platform'].forEach(id => {
+  $(id).addEventListener('input', calc);
+});
+calc();
+</script>
+</body>
+</html>
